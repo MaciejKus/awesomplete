@@ -169,6 +169,22 @@ _.prototype = {
 		if (!this.opened) {
 			return;
 		}
+		var selected = this.ul.children[this.index];
+	 	if (selected) {
+			var suggestion = this.suggestions[this.index];
+
+			var allowed = $.fire(this.input, "awesomplete-select", {
+				text: suggestion,
+				origin:  selected
+			});
+
+			if (allowed) {
+				this.replace(suggestion);
+				$.fire(this.input, "awesomplete-selectcomplete", {
+					text: suggestion
+				});
+			}
+		}
 
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
@@ -250,6 +266,8 @@ _.prototype = {
 	},
 
 	select: function (selected, origin) {
+		this.close({ reason: "select" });
+		/*
 		if (selected) {
 			this.index = $.siblingIndex(selected);
 		} else {
@@ -272,6 +290,7 @@ _.prototype = {
 				});
 			}
 		}
+		*/
 	},
 
 	evaluate: function() {
