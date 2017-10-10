@@ -165,17 +165,17 @@ _.prototype = {
 		return this.isOpened;
 	},
 
-	close: function (o) {
+	close: function (o, selected, origin) {
 		if (!this.opened) {
 			return;
 		}
-		var selected = this.ul.children[this.index];
+		
 	 	if (selected) {
 			var suggestion = this.suggestions[this.index];
 
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: suggestion,
-				origin:  selected
+				origin:  origin || selected
 			});
 
 			if (allowed) {
@@ -266,31 +266,12 @@ _.prototype = {
 	},
 
 	select: function (selected, origin) {
-		this.close({ reason: "select" });
-		/*
-		if (selected) {
-			this.index = $.siblingIndex(selected);
-		} else {
-			selected = this.ul.children[this.index];
-		}
-
-		if (selected) {
-			var suggestion = this.suggestions[this.index];
-
-			var allowed = $.fire(this.input, "awesomplete-select", {
-				text: suggestion,
-				origin: origin || selected
-			});
-
-			if (allowed) {
-				this.replace(suggestion);
-				this.close({ reason: "select" });
-				$.fire(this.input, "awesomplete-selectcomplete", {
-					text: suggestion
-				});
-			}
-		}
-		*/
+		        if (selected) {
+          			this.index = $.siblingIndex(selected);
+        		} else {
+          			selected = this.ul.children[this.index];
+        		}
+        		this.close({ reason: "select" }, selected,  origin);
 	},
 
 	evaluate: function() {
